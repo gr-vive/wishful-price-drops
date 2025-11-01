@@ -49,7 +49,8 @@ export function ItemCard({ item, onSimulateDrop, onViewDetails, demoMode }: Item
     }
   };
 
-  const currency = item.tracking_rule.type === 'below_absolute' 
+  // Defensive check for tracking_rule
+  const currency = item.tracking_rule?.type === 'below_absolute' 
     ? item.tracking_rule.currency 
     : 'GBP';
   const symbol = getCurrencySymbol(currency);
@@ -125,9 +126,11 @@ export function ItemCard({ item, onSimulateDrop, onViewDetails, demoMode }: Item
                 data-testid="item-target-price"
                 className="text-sm font-semibold text-primary"
               >
-                {item.tracking_rule.type === 'below_absolute'
+                {item.tracking_rule?.type === 'below_absolute'
                   ? `${symbol}${item.tracking_rule.value.toFixed(2)}`
-                  : `${item.tracking_rule.value}% below avg`}
+                  : item.tracking_rule 
+                  ? `${item.tracking_rule.value}% below avg`
+                  : 'N/A'}
               </p>
             </div>
 

@@ -5,8 +5,8 @@ import { createPayload, CreatePayloadInput } from '@/lib/buildCreatePayload';
 import { buildSkuKey } from '@/lib/normalize';
 import { nanoid } from 'nanoid';
 
-const STORAGE_KEY = 'spa.items.v1';
-const DEMO_KEY = 'spa.demo.v1';
+const STORAGE_KEY = 'spa.items.v2'; // Updated to v2 for snake_case schema
+const DEMO_KEY = 'spa.demo.v2';
 
 export function useItems() {
   const [items, setItems] = useState<ItemDTO[]>([]);
