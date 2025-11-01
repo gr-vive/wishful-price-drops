@@ -7,12 +7,18 @@ import { nanoid } from 'nanoid';
 
 const STORAGE_KEY = 'spa.items.v2'; // Updated to v2 for snake_case schema
 const DEMO_KEY = 'spa.demo.v2';
+const OLD_STORAGE_KEY = 'spa.items.v1';
+const OLD_DEMO_KEY = 'spa.demo.v1';
 
 export function useItems() {
   const [items, setItems] = useState<ItemDTO[]>([]);
   const [loading, setLoading] = useState(false);
   const [lastFetchAt, setLastFetchAt] = useState<string | undefined>(undefined);
   const [demoMode, setDemoMode] = useState(() => {
+    // Clear old v1 data
+    localStorage.removeItem(OLD_STORAGE_KEY);
+    localStorage.removeItem(OLD_DEMO_KEY);
+    
     const stored = localStorage.getItem(DEMO_KEY);
     return stored === 'true' || import.meta.env.VITE_DEMO_MODE === 'true';
   });

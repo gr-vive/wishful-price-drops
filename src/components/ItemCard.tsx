@@ -12,6 +12,12 @@ interface ItemCardProps {
 }
 
 export function ItemCard({ item, onSimulateDrop, onViewDetails, demoMode }: ItemCardProps) {
+  // Guard against malformed items
+  if (!item.tracking_rule) {
+    console.error('Item missing tracking_rule:', item);
+    return null;
+  }
+
   const getCurrencySymbol = (currency?: 'GBP' | 'USD' | 'EUR') => {
     switch (currency) {
       case 'GBP':
@@ -49,8 +55,7 @@ export function ItemCard({ item, onSimulateDrop, onViewDetails, demoMode }: Item
     }
   };
 
-  // Defensive check for tracking_rule
-  const currency = item.tracking_rule?.type === 'below_absolute' 
+  const currency = item.tracking_rule.type === 'below_absolute' 
     ? item.tracking_rule.currency 
     : 'GBP';
   const symbol = getCurrencySymbol(currency);
@@ -126,11 +131,9 @@ export function ItemCard({ item, onSimulateDrop, onViewDetails, demoMode }: Item
                 data-testid="item-target-price"
                 className="text-sm font-semibold text-primary"
               >
-                {item.tracking_rule?.type === 'below_absolute'
+                {item.tracking_rule.type === 'below_absolute'
                   ? `${symbol}${item.tracking_rule.value.toFixed(2)}`
-                  : item.tracking_rule 
-                  ? `${item.tracking_rule.value}% below avg`
-                  : 'N/A'}
+                  : `${item.tracking_rule.value}% below avg`}
               </p>
             </div>
 
