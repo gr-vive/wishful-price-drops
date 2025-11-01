@@ -20,7 +20,7 @@ export const Hero = ({ onGetStarted }: HeroProps) => {
         className="text-center max-w-4xl mx-auto space-y-6"
       >
         {/* Brand */}
-        <div className="mb-2 text-sm font-semibold tracking-wider uppercase text-muted-foreground">
+        <div className="mb-4 text-5xl md:text-6xl font-bold italic bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent" style={{ fontFamily: 'cursive' }}>
           Unbiased
         </div>
         {/* Badge */}
@@ -36,12 +36,12 @@ export const Hero = ({ onGetStarted }: HeroProps) => {
 
         {/* Main Heading */}
         <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
-          Never Miss a Price Drop Again
+          Smarter Tracking. Better Prices. Real Savings.
         </h1>
 
         {/* Subtitle */}
         <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 leading-relaxed">
-          Track your favorite products across the web and get instant notifications when prices drop below your target. Unbiased, automated, and effortless.
+          Track your favorite products across the web and get instant notifications when prices drop below your target.
         </p>
 
         {/* Feature Pills */}
