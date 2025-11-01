@@ -147,28 +147,37 @@ export function ItemCard({ item, onSimulateDrop, onViewDetails, demoMode }: Item
 
             <div className="border-t pt-2">
               <p className="text-xs text-muted-foreground mb-1">Lowest Price Today</p>
-              <div className="flex items-center justify-between gap-2">
+              {item.lowest_price_url && item.lowest_price_store ? (
+                <a
+                  href={item.lowest_price_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between gap-2 hover:opacity-80 transition-opacity group/link"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <p
+                    data-testid="item-lowest-price"
+                    className="text-lg font-bold text-success"
+                  >
+                    {item.lowest_price_today !== undefined
+                      ? `${symbol}${item.lowest_price_today.toFixed(2)}`
+                      : 'N/A'}
+                  </p>
+                  <div className="text-xs text-primary group-hover/link:underline flex items-center gap-1">
+                    View at {item.lowest_price_store}
+                    <ExternalLink className="h-3 w-3" />
+                  </div>
+                </a>
+              ) : (
                 <p
                   data-testid="item-lowest-price"
-                  className="text-lg font-bold text-success"
+                  className="text-lg font-bold text-muted-foreground"
                 >
                   {item.lowest_price_today !== undefined
                     ? `${symbol}${item.lowest_price_today.toFixed(2)}`
                     : 'N/A'}
                 </p>
-                {item.lowest_price_url && item.lowest_price_store && (
-                  <a
-                    href={item.lowest_price_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-primary hover:underline flex items-center gap-1"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    {item.lowest_price_store}
-                    <ExternalLink className="h-3 w-3" />
-                  </a>
-                )}
-              </div>
+              )}
             </div>
           </div>
 
