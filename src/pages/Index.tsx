@@ -43,18 +43,12 @@ const Index = () => {
     // Set up auth state listener first
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
-      if (!session) {
-        navigate("/auth");
-      }
     });
 
     // Then check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       setIsAuthChecking(false);
-      if (!session) {
-        navigate("/auth");
-      }
     });
 
     return () => subscription.unsubscribe();
@@ -68,6 +62,13 @@ const Index = () => {
   }, [user]);
 
   const handleAddItem = async (data: FormData) => {
+    // Check if user is authenticated
+    if (!user) {
+      navigate("/auth");
+      toast.info("Please sign in to add items");
+      return;
+    }
+
     try {
       await addBy({
         mode: data.input_type,
@@ -156,6 +157,15 @@ const Index = () => {
 
   const selectedItem = selectedItemId ? items.find((i) => i.id === selectedItemId) || null : null;
 
+  const handleAddItemClick = () => {
+    if (!user) {
+      navigate("/auth");
+      toast.info("Please sign in to add items");
+      return;
+    }
+    setDialogOpen(true);
+  };
+
   // Show loading while checking auth
   if (isAuthChecking) {
     return (
@@ -187,7 +197,7 @@ const Index = () => {
 
           <main className="container mx-auto px-4 py-8">
           <Toolbar
-            onAddItem={() => setDialogOpen(true)}
+            onAddItem={handleAddItemClick}
             onRefresh={handleRefresh}
             onAddDemo={handleAddDemo}
             demoMode={demoMode}
@@ -195,14 +205,14 @@ const Index = () => {
             sortBy={sortBy}
             onSortChange={setSortBy}
             isRefreshing={isRefreshing}
-            onSignOut={handleSignOut}
+            onSignOut={user ? handleSignOut : undefined}
             userEmail={user?.email}
           />
 
           <div className="mt-8">
-            <h2 className="text-2xl font-semibold mb-6">My Wishlist</h2>
+            <h2 className="text-2xl font-semibold mb-6">{user ? 'My Wishlist' : 'Get Started'}</h2>
             {items.length === 0 ? (
-              <EmptyState onAddItem={() => setDialogOpen(true)} onAddDemo={handleAddDemo} />
+              <EmptyState onAddItem={handleAddItemClick} onAddDemo={handleAddDemo} />
             ) : (
               <div data-testid="wishlist" className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {items.map((item) => (
