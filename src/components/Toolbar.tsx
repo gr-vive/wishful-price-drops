@@ -1,4 +1,4 @@
-import { Plus, RefreshCw, Beaker } from 'lucide-react';
+import { Plus, RefreshCw, Beaker, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
@@ -9,6 +9,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 interface ToolbarProps {
   onAddItem: () => void;
@@ -19,6 +28,8 @@ interface ToolbarProps {
   sortBy: string;
   onSortChange: (value: string) => void;
   isRefreshing?: boolean;
+  onSignOut?: () => void;
+  userEmail?: string;
 }
 
 export function Toolbar({
@@ -30,6 +41,8 @@ export function Toolbar({
   sortBy,
   onSortChange,
   isRefreshing = false,
+  onSignOut,
+  userEmail,
 }: ToolbarProps) {
   return (
     <div className="flex flex-wrap items-center justify-between gap-4 rounded-lg border bg-card p-4">
@@ -91,6 +104,35 @@ export function Toolbar({
             Demo Mode
           </Label>
         </div>
+
+        {userEmail && onSignOut && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                <Avatar>
+                  <AvatarFallback>
+                    {userEmail.charAt(0).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel className="font-normal">
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-medium leading-none">Account</p>
+                  <p className="text-xs leading-none text-muted-foreground">
+                    {userEmail}
+                  </p>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={onSignOut}>
+                <LogOut className="mr-2 h-4 w-4" />
+                Sign out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
     </div>
   );

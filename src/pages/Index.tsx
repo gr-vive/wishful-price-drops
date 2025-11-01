@@ -1,4 +1,7 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { User } from "@supabase/supabase-js";
 import { useItems } from "@/state/useItems";
 import { ItemDTO, TrackingRule } from "@/types/item";
 import { Toolbar } from "@/components/Toolbar";
@@ -12,6 +15,7 @@ import { Hero } from "@/components/Hero";
 import { toast } from "sonner";
 
 const Index = () => {
+  const navigate = useNavigate();
   const {
     items,
     demoMode,
@@ -25,6 +29,8 @@ const Index = () => {
     editTrackingRule,
   } = useItems();
 
+  const [user, setUser] = useState<User | null>(null);
+  const [isAuthChecking, setIsAuthChecking] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [sortBy, setSortBy] = useState("date");
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -32,10 +38,34 @@ const Index = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const mainContentRef = useRef<HTMLDivElement>(null);
 
+  // Check authentication
+  useEffect(() => {
+    // Set up auth state listener first
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+      if (!session) {
+        navigate("/auth");
+      }
+    });
+
+    // Then check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setIsAuthChecking(false);
+      if (!session) {
+        navigate("/auth");
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
   // Bootstrap on mount
   useEffect(() => {
-    bootstrap();
-  }, []);
+    if (user) {
+      bootstrap();
+    }
+  }, [user]);
 
   const handleAddItem = async (data: FormData) => {
     try {
@@ -119,7 +149,23 @@ const Index = () => {
     mainContentRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    toast.success("Signed out successfully");
+  };
+
   const selectedItem = selectedItemId ? items.find((i) => i.id === selectedItemId) || null : null;
+
+  // Show loading while checking auth
+  if (isAuthChecking) {
+    return (
+      <AuroraBackground className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </AuroraBackground>
+    );
+  }
 
   return (
     <AuroraBackground className="min-h-screen overflow-auto">
@@ -149,6 +195,8 @@ const Index = () => {
             sortBy={sortBy}
             onSortChange={setSortBy}
             isRefreshing={isRefreshing}
+            onSignOut={handleSignOut}
+            userEmail={user?.email}
           />
 
           <div className="mt-8">
