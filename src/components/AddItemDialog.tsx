@@ -122,12 +122,9 @@ export function AddItemDialog({ open, onOpenChange, onSubmit }: AddItemDialogPro
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as InputType)}>
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger data-testid="tab-url" value="url">
               URL
-            </TabsTrigger>
-            <TabsTrigger data-testid="tab-name" value="name">
-              Name
             </TabsTrigger>
             <TabsTrigger data-testid="tab-name-attrs" value="name+attrs">
               Name + Attributes
