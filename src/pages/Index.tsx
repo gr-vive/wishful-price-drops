@@ -196,6 +196,7 @@ const Index = () => {
         />
 
         <div className="mt-8">
+          <h2 className="text-2xl font-semibold mb-6">My Wishlist</h2>
           {items.length === 0 ? (
             <EmptyState
               onAddItem={() => setDialogOpen(true)}
