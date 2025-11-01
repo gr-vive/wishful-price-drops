@@ -19,6 +19,10 @@ export const Hero = ({ onGetStarted }: HeroProps) => {
         }}
         className="text-center max-w-4xl mx-auto space-y-6"
       >
+        {/* Brand */}
+        <div className="mb-2 text-sm font-semibold tracking-wider uppercase text-muted-foreground">
+          Unbiased
+        </div>
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
