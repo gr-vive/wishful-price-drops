@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
-import { useItems } from '@/state/useItems';
-import { ItemDTO, TrackingRule } from '@/types/item';
-import { Toolbar } from '@/components/Toolbar';
-import { ItemCard } from '@/components/ItemCard';
-import { EmptyState } from '@/components/EmptyState';
-import { AddItemDialog, FormData } from '@/components/AddItemDialog';
-import { ItemDetailsDrawer } from '@/components/ItemDetailsDrawer';
-import { DebugPanel } from '@/components/DebugPanel';
-import { toast } from 'sonner';
+import { useState, useEffect } from "react";
+import { useItems } from "@/state/useItems";
+import { ItemDTO, TrackingRule } from "@/types/item";
+import { Toolbar } from "@/components/Toolbar";
+import { ItemCard } from "@/components/ItemCard";
+import { EmptyState } from "@/components/EmptyState";
+import { AddItemDialog, FormData } from "@/components/AddItemDialog";
+import { ItemDetailsDrawer } from "@/components/ItemDetailsDrawer";
+import { DebugPanel } from "@/components/DebugPanel";
+import { toast } from "sonner";
 
 const Index = () => {
   const {
@@ -24,7 +24,7 @@ const Index = () => {
   } = useItems();
 
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [sortBy, setSortBy] = useState('date');
+  const [sortBy, setSortBy] = useState("date");
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -45,41 +45,41 @@ const Index = () => {
         attrs: data.attributes,
         rule: data.tracking_rule,
       });
-      
+
       setDialogOpen(false);
-      toast.success('Item added successfully', {
+      toast.success("Item added successfully", {
         description: `Now tracking: ${data.title}`,
       });
     } catch (error) {
-      toast.error('Failed to add item', {
-        description: error instanceof Error ? error.message : 'Unknown error',
+      toast.error("Failed to add item", {
+        description: error instanceof Error ? error.message : "Unknown error",
       });
     }
   };
 
   const handleAddDemo = () => {
     seedDemo();
-    toast.success('Demo items added', {
-      description: 'Try refreshing prices or simulating a price drop',
+    toast.success("Demo items added", {
+      description: "Try refreshing prices or simulating a price drop",
     });
   };
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
-    toast.info('Refreshing prices...', {
-      description: 'This may take a few moments',
+    toast.info("Refreshing prices...", {
+      description: "This may take a few moments",
     });
 
     try {
       await refreshPrices();
       setIsRefreshing(false);
-      toast.success('Prices updated', {
+      toast.success("Prices updated", {
         description: `Checked ${items.length} items`,
       });
     } catch (error) {
       setIsRefreshing(false);
-      toast.error('Failed to refresh prices', {
-        description: 'Consider enabling Demo Mode',
+      toast.error("Failed to refresh prices", {
+        description: "Consider enabling Demo Mode",
       });
     }
   };
@@ -90,11 +90,11 @@ const Index = () => {
 
     try {
       await simulateDrop(id);
-      toast.success('Price drop simulated!', {
+      toast.success("Price drop simulated!", {
         description: `${item.title} is now below your target`,
       });
     } catch (error) {
-      toast.error('Failed to simulate drop');
+      toast.error("Failed to simulate drop");
     }
   };
 
@@ -106,15 +106,13 @@ const Index = () => {
   const handleSaveTarget = async (id: string, rule: TrackingRule) => {
     try {
       await editTrackingRule(id, rule);
-      toast.success('Target price updated');
+      toast.success("Target price updated");
     } catch (error) {
-      toast.error('Failed to update target');
+      toast.error("Failed to update target");
     }
   };
 
-  const selectedItem = selectedItemId
-    ? items.find((i) => i.id === selectedItemId) || null
-    : null;
+  const selectedItem = selectedItemId ? items.find((i) => i.id === selectedItemId) || null : null;
 
   return (
     <div data-testid="app-shell" className="min-h-screen bg-background">
@@ -133,10 +131,8 @@ const Index = () => {
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold tracking-tight">Unbiased</h1>
-              <p className="text-muted-foreground mt-1">
-                Track prices and get notified when they drop
-              </p>
+              <h1 className="text-3xl font-bold tracking-tight">Inbiased</h1>
+              <p className="text-muted-foreground mt-1">Track prices and get notified when they drop</p>
             </div>
           </div>
         </div>
@@ -158,10 +154,7 @@ const Index = () => {
         <div className="mt-8">
           <h2 className="text-2xl font-semibold mb-6">My Wishlist</h2>
           {items.length === 0 ? (
-            <EmptyState
-              onAddItem={() => setDialogOpen(true)}
-              onAddDemo={handleAddDemo}
-            />
+            <EmptyState onAddItem={() => setDialogOpen(true)} onAddDemo={handleAddDemo} />
           ) : (
             <div data-testid="wishlist" className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {items.map((item) => (
@@ -182,11 +175,7 @@ const Index = () => {
       {demoMode && <DebugPanel lastFetchAt={lastFetchAt} itemCount={items.length} />}
 
       {/* Modals and Drawers */}
-      <AddItemDialog
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
-        onSubmit={handleAddItem}
-      />
+      <AddItemDialog open={dialogOpen} onOpenChange={setDialogOpen} onSubmit={handleAddItem} />
 
       <ItemDetailsDrawer
         item={selectedItem}
