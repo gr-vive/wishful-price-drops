@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useItems } from "@/state/useItems";
 import { ItemDTO, TrackingRule } from "@/types/item";
 import { Toolbar } from "@/components/Toolbar";
@@ -8,6 +8,7 @@ import { AddItemDialog, FormData } from "@/components/AddItemDialog";
 import { ItemDetailsDrawer } from "@/components/ItemDetailsDrawer";
 import { DebugPanel } from "@/components/DebugPanel";
 import { AuroraBackground } from "@/components/ui/aurora-background";
+import { Hero } from "@/components/Hero";
 import { toast } from "sonner";
 
 const Index = () => {
@@ -29,6 +30,7 @@ const Index = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const mainContentRef = useRef<HTMLDivElement>(null);
 
   // Bootstrap on mount
   useEffect(() => {
@@ -113,35 +115,31 @@ const Index = () => {
     }
   };
 
+  const handleGetStarted = () => {
+    mainContentRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   const selectedItem = selectedItemId ? items.find((i) => i.id === selectedItemId) || null : null;
 
   return (
     <AuroraBackground className="min-h-screen overflow-auto">
       <div data-testid="app-shell" className="w-full relative z-10">
-        {/* Demo Mode Banner */}
-        {demoMode && (
-          <div
-            data-testid="demo-banner"
-            className="bg-warning/10 border-b border-warning/20 px-4 py-2 text-center text-sm text-warning-foreground"
-          >
-            🧪 Demo Mode is on — prices and alerts may be simulated
-          </div>
-        )}
-
-        {/* Header */}
-        <header className="border-b bg-card/80 backdrop-blur-sm">
-          <div className="container mx-auto px-4 py-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-3xl font-bold tracking-tight">Inbiased</h1>
-                <p className="text-muted-foreground mt-1">Track prices and get notified when they drop</p>
-              </div>
-            </div>
-          </div>
-        </header>
+        {/* Hero Section */}
+        <Hero onGetStarted={handleGetStarted} />
 
         {/* Main Content */}
-        <main className="container mx-auto px-4 py-8">
+        <div ref={mainContentRef} className="min-h-screen bg-background/95 backdrop-blur-sm">
+          {/* Demo Mode Banner */}
+          {demoMode && (
+            <div
+              data-testid="demo-banner"
+              className="bg-warning/10 border-b border-warning/20 px-4 py-2 text-center text-sm text-warning-foreground"
+            >
+              🧪 Demo Mode is on — prices and alerts may be simulated
+            </div>
+          )}
+
+          <main className="container mx-auto px-4 py-8">
           <Toolbar
             onAddItem={() => setDialogOpen(true)}
             onRefresh={handleRefresh}
@@ -171,10 +169,11 @@ const Index = () => {
               </div>
             )}
           </div>
-        </main>
 
-        {/* Debug Panel */}
-        {demoMode && <DebugPanel lastFetchAt={lastFetchAt} itemCount={items.length} />}
+          {/* Debug Panel */}
+          {demoMode && <DebugPanel lastFetchAt={lastFetchAt} itemCount={items.length} />}
+        </main>
+        </div>
 
         {/* Modals and Drawers */}
         <AddItemDialog open={dialogOpen} onOpenChange={setDialogOpen} onSubmit={handleAddItem} />
