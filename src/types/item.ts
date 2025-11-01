@@ -11,21 +11,26 @@ export type TrackingRule =
   | { type: 'percentage_below_avg'; value: number } // e.g., 10 for -10%
   | { type: 'below_absolute'; currency: 'GBP' | 'USD' | 'EUR'; value: number };
 
+export type PricePoint = {
+  ts: string;
+  price: number;
+};
+
 export type ItemDTO = {
   id: string;
   title: string;
   url?: string;
   image?: string;
   domain: string;
-  inputType: InputType;
-  userCountry: Country;
+  input_type: InputType;
+  user_country: Country;
   attributes?: NormalisedAttributes;
   links: string[];
-  currentPrice?: number;
-  targetPrice?: number;
-  trackingRule: TrackingRule;
+  current_price?: number;
+  target_price?: number;
+  tracking_rule: TrackingRule;
   status: 'TRACKING' | 'ALERTED' | 'ERROR';
-  lastChecked?: string;
-  history?: Array<{ ts: string; price: number }>;
-  skuKey?: string;
+  last_checked?: string;
+  history?: PricePoint[];
+  sku_key: string;
 };

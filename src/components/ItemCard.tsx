@@ -49,8 +49,8 @@ export function ItemCard({ item, onSimulateDrop, onViewDetails, demoMode }: Item
     }
   };
 
-  const currency = item.trackingRule.type === 'below_absolute' 
-    ? item.trackingRule.currency 
+  const currency = item.tracking_rule.type === 'below_absolute' 
+    ? item.tracking_rule.currency 
     : 'GBP';
   const symbol = getCurrencySymbol(currency);
 
@@ -113,8 +113,8 @@ export function ItemCard({ item, onSimulateDrop, onViewDetails, demoMode }: Item
                 data-testid="item-current-price"
                 className="text-lg font-bold"
               >
-                {item.currentPrice !== undefined
-                  ? `${symbol}${item.currentPrice.toFixed(2)}`
+                {item.current_price !== undefined
+                  ? `${symbol}${item.current_price.toFixed(2)}`
                   : 'N/A'}
               </p>
             </div>
@@ -125,17 +125,17 @@ export function ItemCard({ item, onSimulateDrop, onViewDetails, demoMode }: Item
                 data-testid="item-target-price"
                 className="text-sm font-semibold text-primary"
               >
-                {item.trackingRule.type === 'below_absolute'
-                  ? `${symbol}${item.trackingRule.value.toFixed(2)}`
-                  : `${item.trackingRule.value}% below avg`}
+                {item.tracking_rule.type === 'below_absolute'
+                  ? `${symbol}${item.tracking_rule.value.toFixed(2)}`
+                  : `${item.tracking_rule.value}% below avg`}
               </p>
             </div>
 
-            {item.lastChecked && (
+            {item.last_checked && (
               <div className="ml-auto text-right">
                 <p className="text-xs text-muted-foreground">Last checked</p>
                 <p className="text-xs">
-                  {new Date(item.lastChecked).toLocaleTimeString()}
+                  {new Date(item.last_checked).toLocaleTimeString()}
                 </p>
               </div>
             )}

@@ -30,15 +30,15 @@ interface AddItemDialogProps {
 export interface FormData {
   title: string;
   url?: string;
-  inputType: InputType;
-  userCountry: Country;
+  input_type: InputType;
+  user_country: Country;
   links: string[];
   attributes?: {
     size?: string;
     color?: string;
     region?: string;
   };
-  trackingRule: TrackingRule;
+  tracking_rule: TrackingRule;
 }
 
 export function AddItemDialog({ open, onOpenChange, onSubmit }: AddItemDialogProps) {
@@ -96,11 +96,11 @@ export function AddItemDialog({ open, onOpenChange, onSubmit }: AddItemDialogPro
     onSubmit({
       title,
       url: activeTab === 'url' ? url : undefined,
-      inputType: activeTab,
-      userCountry: country,
+      input_type: activeTab,
+      user_country: country,
       links: linksList,
       attributes: attrs,
-      trackingRule,
+      tracking_rule: trackingRule,
     });
 
     // Reset form

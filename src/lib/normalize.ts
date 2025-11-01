@@ -44,17 +44,22 @@ export function normalizeAttributes(input: Partial<NormalisedAttributes>): Norma
   return result;
 }
 
+// Slug title for SKU key
+export function slugTitle(title: string): string {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
 // Build SKU key from title, attributes, and country
 export function buildSkuKey(
   title: string,
   attrs?: NormalisedAttributes,
   country?: Country
 ): string {
-  const slug = title
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
+  const slug = slugTitle(title);
 
   const attrParts: string[] = [];
   if (attrs) {
