@@ -8,7 +8,7 @@ interface HeroProps {
 
 export const Hero = ({ onGetStarted }: HeroProps) => {
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center px-4 relative">
+    <section className="min-h-screen flex flex-col items-center justify-center px-4 py-20 relative">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -17,7 +17,7 @@ export const Hero = ({ onGetStarted }: HeroProps) => {
           duration: 0.8,
           ease: "easeInOut",
         }}
-        className="text-center max-w-4xl mx-auto"
+        className="text-center max-w-4xl mx-auto space-y-6"
       >
         {/* Badge */}
         <motion.div
