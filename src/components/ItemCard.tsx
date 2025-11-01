@@ -112,39 +112,64 @@ export function ItemCard({ item, onSimulateDrop, onViewDetails, demoMode }: Item
             {getStatusBadge()}
           </div>
 
-          <div className="flex items-center gap-4 mt-auto">
-            <div>
-              <p className="text-xs text-muted-foreground">Current Price</p>
-              <p
-                data-testid="item-current-price"
-                className="text-lg font-bold"
-              >
-                {item.current_price !== undefined
-                  ? `${symbol}${item.current_price.toFixed(2)}`
-                  : 'N/A'}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-xs text-muted-foreground">Target</p>
-              <p
-                data-testid="item-target-price"
-                className="text-sm font-semibold text-primary"
-              >
-                {item.tracking_rule.type === 'below_absolute'
-                  ? `${symbol}${item.tracking_rule.value.toFixed(2)}`
-                  : `${item.tracking_rule.value}% below avg`}
-              </p>
-            </div>
-
-            {item.last_checked && (
-              <div className="ml-auto text-right">
-                <p className="text-xs text-muted-foreground">Last checked</p>
-                <p className="text-xs">
-                  {new Date(item.last_checked).toLocaleTimeString()}
+          <div className="flex flex-col gap-3 mt-auto">
+            <div className="flex items-center gap-4">
+              <div>
+                <p className="text-xs text-muted-foreground">Initial Price</p>
+                <p className="text-sm font-medium">
+                  {item.initial_price !== undefined
+                    ? `${symbol}${item.initial_price.toFixed(2)}`
+                    : 'N/A'}
                 </p>
               </div>
-            )}
+
+              <div>
+                <p className="text-xs text-muted-foreground">Target Price</p>
+                <p
+                  data-testid="item-target-price"
+                  className="text-sm font-semibold text-primary"
+                >
+                  {item.tracking_rule.type === 'below_absolute'
+                    ? `${symbol}${item.tracking_rule.value.toFixed(2)}`
+                    : `${item.tracking_rule.value}% below avg`}
+                </p>
+              </div>
+
+              {item.last_checked && (
+                <div className="ml-auto text-right">
+                  <p className="text-xs text-muted-foreground">Last checked</p>
+                  <p className="text-xs">
+                    {new Date(item.last_checked).toLocaleTimeString()}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <div className="border-t pt-2">
+              <p className="text-xs text-muted-foreground mb-1">Lowest Price Today</p>
+              <div className="flex items-center justify-between gap-2">
+                <p
+                  data-testid="item-lowest-price"
+                  className="text-lg font-bold text-success"
+                >
+                  {item.lowest_price_today !== undefined
+                    ? `${symbol}${item.lowest_price_today.toFixed(2)}`
+                    : 'N/A'}
+                </p>
+                {item.lowest_price_url && item.lowest_price_store && (
+                  <a
+                    href={item.lowest_price_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-primary hover:underline flex items-center gap-1"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {item.lowest_price_store}
+                    <ExternalLink className="h-3 w-3" />
+                  </a>
+                )}
+              </div>
+            </div>
           </div>
 
           {demoMode && onSimulateDrop && item.status !== 'ALERTED' && (

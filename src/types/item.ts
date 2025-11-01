@@ -26,8 +26,12 @@ export type ItemDTO = {
   user_country: Country;
   attributes?: NormalisedAttributes;
   links: string[];
+  initial_price?: number;
   current_price?: number;
   target_price?: number;
+  lowest_price_today?: number;
+  lowest_price_url?: string;
+  lowest_price_store?: string;
   tracking_rule: TrackingRule;
   status: 'TRACKING' | 'ALERTED' | 'ERROR';
   last_checked?: string;
