@@ -20,7 +20,7 @@ export const Hero = ({ onGetStarted }: HeroProps) => {
         className="text-center max-w-4xl mx-auto space-y-6"
       >
         {/* Brand */}
-        <div className="mb-4 text-5xl md:text-6xl font-bold italic bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent" style={{ fontFamily: 'cursive' }}>
+        <div className="mb-4 text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
           Unbiased
         </div>
         {/* Badge */}
